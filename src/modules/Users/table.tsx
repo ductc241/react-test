@@ -8,6 +8,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -25,8 +26,8 @@ const UserTable = () => {
 
   const [users, setUsers] = useState<IUser[]>([]);
 
-  const [page, setPage] = useState<number>(0);
-  const [perPage, setPerPage] = useState<number>(10);
+  const [page, setPage] = useState<number>(1);
+  const [perPage, setPerPage] = useState<number>(3);
 
   useEffect(() => {
     userServices
@@ -65,7 +66,7 @@ const UserTable = () => {
             </TableHead>
             <TableBody>
               {users
-                .slice(page * perPage, page * perPage + perPage)
+                .slice((page - 1) * perPage, (page - 1) * perPage + perPage)
                 .map((user) => {
                   return (
                     <TableRow hover role='checkbox' tabIndex={-1} key={user.id}>
@@ -82,6 +83,21 @@ const UserTable = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component='div'
+          count={users.length}
+          rowsPerPage={perPage}
+          page={page}
+          onPageChange={(e, newPage: number) => {
+            console.log(newPage);
+            setPage(newPage);
+          }}
+          onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setPerPage(+event.target.value);
+            setPage(0);
+          }}
+        />
       </Paper>
     </Box>
   );

@@ -27,7 +27,7 @@ const LoginForm = () => {
       username: "",
       password: "",
     },
-    // resolver: yupResolver(schema),
+    resolver: yupResolver(schema),
   });
 
   const [errorLogin, setErrorLogin] = useState<string>("");

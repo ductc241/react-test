@@ -16,7 +16,7 @@ import CreateIcon from "@mui/icons-material/Create";
 import InputText from "../../../components/inputs/InputText";
 import { schema } from "../constants";
 import { IUserAction, IUserUpdateError } from "../../../interfaces/user";
-import { useNavigate, useParams } from "react-router-dom";
+import { useBlocker, useNavigate, useParams } from "react-router-dom";
 import { PATH_USER, PATH_USER_NOTFOUND } from "../../../routes/routes.path";
 import { useEffect, useState } from "react";
 import userServices from "../../../api/user";
@@ -51,7 +51,7 @@ const UserForm = ({ mode }: IProps) => {
     handleSubmit,
     reset,
     setError,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<IUserAction>({
     defaultValues: {
       username: "",
