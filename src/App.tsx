@@ -4,6 +4,8 @@ import MainLayout from "./layouts/MainLayout";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { appRoutes } from "./routes";
+import { PATH_SIGNIN } from "./routes/routes.path";
+import LoginForm from "./modules/Auth/LoginForm";
 
 const App = () => {
   return (
@@ -25,8 +27,8 @@ const App = () => {
             />
           ))}
         </Route>
+        <Route path={PATH_SIGNIN} element={<LoginForm />} />
 
-        {/* <Route path={PATH_SIGNIN} element={<Signin />} /> */}
         <Route path='*' element={<h1>Page not found</h1>} />
       </Routes>
     </BrowserRouter>

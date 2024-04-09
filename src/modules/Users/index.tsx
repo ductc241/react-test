@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { UserContext } from "./context";
 import UserTable from "./table";
-import UserFormModal from "./modals/UserForm";
 
 const UserModule = () => {
   const [openModal, setOpenModal] = useState<any>({
@@ -16,7 +15,6 @@ const UserModule = () => {
   return (
     <UserContext.Provider value={{ openModal, handleModal }}>
       <UserTable />
-      <UserFormModal />
     </UserContext.Provider>
   );
 };

@@ -1,6 +1,7 @@
-import UserModule from "../modules/Users";
 import * as routerPaths from "./routes.path";
 import IRoute from "../interfaces/route";
+
+import UserModule from "../modules/Users";
 import UserForm from "../modules/Users/components/UserForm";
 
 export const appRoutes: IRoute[] = [

@@ -1,3 +1,7 @@
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import toast from "react-hot-toast";
+import styled from "@emotion/styled";
 import {
   Box,
   Button,
@@ -5,16 +9,18 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  Paper,
 } from "@mui/material";
-import InputText from "../../../components/inputs/InputText";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { schema } from "../constants";
-import { IUserAction } from "../../../interfaces/user";
-import styled from "@emotion/styled";
 import AddIcon from "@mui/icons-material/Add";
-import toast from "react-hot-toast";
+import CreateIcon from "@mui/icons-material/Create";
+
+import InputText from "../../../components/inputs/InputText";
+import { schema } from "../constants";
+import { IUserAction, IUserUpdateError } from "../../../interfaces/user";
+import { useNavigate, useParams } from "react-router-dom";
+import { PATH_USER, PATH_USER_NOTFOUND } from "../../../routes/routes.path";
+import { useEffect, useState } from "react";
+import userServices from "../../../api/user";
+import { AxiosError } from "axios";
 
 const FormHeader = styled(CardHeader)(() => ({
   paddingTop: "10px",
@@ -37,9 +43,14 @@ interface IProps {
 }
 
 const UserForm = ({ mode }: IProps) => {
+  const navigate = useNavigate();
+  const params = useParams();
+
   const {
     control,
     handleSubmit,
+    reset,
+    setError,
     formState: { errors },
   } = useForm<IUserAction>({
     defaultValues: {
@@ -51,13 +62,58 @@ const UserForm = ({ mode }: IProps) => {
     resolver: yupResolver(schema),
   });
 
+  const [isDisableForm, setIsDisableForm] = useState<boolean>(false);
+
   const handleClose = () => {
-    toast.success("Here is your toast.");
+    navigate(PATH_USER);
+  };
+
+  const handleCreateUser = () => {};
+
+  const handleUpdateUser = (data: IUserAction) => {
+    if (!params.id) return;
+
+    userServices
+      .update(params.id, data)
+      .then((rs) => {
+        toast.success("Update Success");
+        navigate(PATH_USER);
+      })
+      .catch((err: AxiosError<IUserUpdateError, any>) => {
+        if (err.response?.status === 400) {
+          const fieldErrors = err.response.data.errors;
+
+          for (const [key, value] of Object.entries(fieldErrors)) {
+            console.log(`${key}: ${value}`);
+            setError(value.path as keyof IUserAction, {
+              type: "validate",
+              message: value.msg,
+            });
+          }
+        }
+      });
   };
 
   const onSubmit = (data: IUserAction) => {
-    console.log(data);
+    if (mode === "create") handleCreateUser();
+    if (mode === "update") handleUpdateUser(data);
   };
+
+  useEffect(() => {
+    if (mode !== "update") return;
+
+    if (params.id) {
+      userServices
+        .getById(params.id)
+        .then((rs) => {
+          const { username, firstName, lastName, email } = rs.data;
+          reset({ username, firstName, lastName, email });
+        })
+        .catch((err: AxiosError) => {
+          if (err.response?.status === 404) navigate(PATH_USER_NOTFOUND);
+        });
+    }
+  }, [params]);
 
   return (
     <Box display='flex' justifyContent='center'>
@@ -66,7 +122,10 @@ const UserForm = ({ mode }: IProps) => {
         component='form'
         onSubmit={handleSubmit(onSubmit)}
       >
-        <FormHeader title='Thêm người dùng' avatar={<AddIcon />} />
+        <FormHeader
+          title={mode === "create" ? "Add user" : "Update"}
+          avatar={mode === "create" ? <AddIcon /> : <CreateIcon />}
+        />
 
         <CardContent sx={{ py: 3 }}>
           <InputText
@@ -108,7 +167,7 @@ const UserForm = ({ mode }: IProps) => {
 
         <FormFooter>
           <Button onClick={handleClose} variant='text'>
-            Cancel
+            Back
           </Button>
           <Button type='submit' variant='contained'>
             Submit

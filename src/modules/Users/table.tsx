@@ -16,8 +16,11 @@ import { userColumns } from "./constants";
 import IUser from "../../interfaces/user";
 import userServices from "../../api/user";
 import { UserContext } from "./context";
+import { useNavigate } from "react-router-dom";
+import { PATH_USER_ADD } from "../../routes/routes.path";
 
 const UserTable = () => {
+  const navigate = useNavigate();
   const { handleModal } = useContext<any>(UserContext);
 
   const [users, setUsers] = useState<IUser[]>([]);
@@ -39,7 +42,7 @@ const UserTable = () => {
         variant='contained'
         tabIndex={-1}
         startIcon={<AddIcon />}
-        onClick={() => handleModal("modal")}
+        onClick={() => navigate(PATH_USER_ADD)}
       >
         Add new
       </Button>

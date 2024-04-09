@@ -1,6 +1,13 @@
 import axios from "axios";
 
-const authorizedRequest = axios.create({
+export const authorizedRequest = axios.create({
+  baseURL: "http://localhost:8080/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+export const unAuthorizedRequest = axios.create({
   baseURL: "http://localhost:8080/api",
   headers: {
     "Content-Type": "application/json",
@@ -21,5 +28,3 @@ authorizedRequest.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
-export default authorizedRequest;

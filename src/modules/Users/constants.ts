@@ -10,9 +10,9 @@ export const userColumns: IColumn[] = [
 
 export const schema = yup
   .object({
-    username: yup.string().required(),
-    firstName: yup.string().required(),
-    lastName: yup.string().required(),
+    username: yup.string().max(16, "username too long").required(),
+    firstName: yup.string().max(16, "firstName too long").required(),
+    lastName: yup.string().max(16, "lastName too long").required(),
     email: yup.string().max(32, "email too long").email().required(),
   })
   .required();

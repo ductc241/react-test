@@ -7,3 +7,16 @@ export default interface IUser {
 }
 
 export interface IUserAction extends Omit<IUser, "id"> {}
+
+export interface IUserLogin {
+  username: string;
+  password: string;
+}
+
+export interface IUserUpdateError {
+  errors: {
+    location: string;
+    msg: string;
+    path: string;
+  }[];
+}
