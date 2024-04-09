@@ -1,15 +1,15 @@
 import { Navigate } from "react-router-dom";
-import { PATH_SIGNIN } from "../../routes/routes.path";
-import { jwtDecode } from "jwt-decode";
+import useAuth from "../hooks/useAuth";
+import { PATH_SIGNIN } from "../routes/routes.path";
 
 interface IProps {
   children: JSX.Element;
 }
 
 const PrivateRouter = (props: IProps) => {
-  const token = localStorage.getItem("token");
+  const { isAuthenticated } = useAuth();
 
-  if (!token) {
+  if (!isAuthenticated) {
     return <Navigate to={PATH_SIGNIN} />;
   }
 

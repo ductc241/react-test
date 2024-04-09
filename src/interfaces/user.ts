@@ -13,7 +13,24 @@ export interface IUserLogin {
   password: string;
 }
 
+export interface IUserDecodeData {
+  user: IUser;
+  iat: number;
+}
+
 export interface IUserUpdateError {
+  errors: {
+    location: string;
+    msg: string;
+    path: string;
+  }[];
+}
+
+export interface ILoginError {
+  error: string;
+}
+
+export interface ILoginValidateError {
   errors: {
     location: string;
     msg: string;

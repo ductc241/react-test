@@ -1,4 +1,4 @@
-import PrivateRouter from "./components/inputs/PrivateRoute";
+import PrivateRouter from "./components/PrivateRoute";
 import IRoute from "./interfaces/route";
 import MainLayout from "./layouts/MainLayout";
 

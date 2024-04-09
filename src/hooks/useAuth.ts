@@ -1,7 +1,8 @@
 import { jwtDecode } from "jwt-decode";
+import { IUserDecodeData } from "../interfaces/user";
 
 const useAuth = () => {
-  const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem("token");
 
   if (!token) {
     return {
@@ -11,10 +12,10 @@ const useAuth = () => {
   }
 
   try {
-    const decode_data: any = jwtDecode(token);
+    const decode_data: IUserDecodeData = jwtDecode(token);
     return {
       isAuthenticated: true,
-      user: decode_data,
+      user: decode_data.user,
     };
   } catch (error) {
     return {
