@@ -27,7 +27,7 @@ const UserTable = () => {
   const [users, setUsers] = useState<IUser[]>([]);
 
   const [page, setPage] = useState<number>(1);
-  const [perPage, setPerPage] = useState<number>(3);
+  const [perPage, setPerPage] = useState<number>(5);
 
   useEffect(() => {
     userServices
@@ -65,11 +65,11 @@ const UserTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users
+              {/* {users
                 .slice((page - 1) * perPage, (page - 1) * perPage + perPage)
                 .map((user) => {
                   return (
-                    <TableRow hover role='checkbox' tabIndex={-1} key={user.id}>
+                    <TableRow hover key={user.id}>
                       {userColumns.map((column) => {
                         return (
                           <TableCell key={column.id} align={column.align}>
@@ -79,7 +79,7 @@ const UserTable = () => {
                       })}
                     </TableRow>
                   );
-                })}
+                })} */}
             </TableBody>
           </Table>
         </TableContainer>
